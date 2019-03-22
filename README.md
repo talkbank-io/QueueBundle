@@ -75,7 +75,7 @@ Once you install the bundle you will need to make change in your `AppKernel.php`
         }
     }
 
-####For Symfony 4
+####For Symfony 4 
 
 Once you install the bundle you will need to make change in your `config/bundles.php` by adding the bundle class entry like this.
 
