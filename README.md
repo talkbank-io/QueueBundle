@@ -37,12 +37,14 @@
 
 You can install QueueBundle by composer
 
-    composer require ideasbucket/queue-bundle
+    composer require kogeva/queue-bundle
     
-QueueBundle supports Symfony 2.8, 3.0 and above.
+QueueBundle supports Symfony 3+, 4+ and above.
 
 <a name="configuration"></a>
 ### Configuration
+
+####For Symfony 3
 
 Once you install the bundle you will need to make change in your `AppKernel.php` by adding the bundle class entry like this.
 
@@ -73,6 +75,28 @@ Once you install the bundle you will need to make change in your `AppKernel.php`
         }
     }
 
+####For Symfony 4
+
+Once you install the bundle you will need to make change in your `config/bundles.php` by adding the bundle class entry like this.
+
+    <?php
+    
+    return [
+        Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
+        Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
+        Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true],
+        Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
+        Symfony\Bundle\TwigBundle\TwigBundle::class => ['dev' => true, 'test' => true],
+        Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
+        Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle::class => ['all' => true],
+        Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
+        Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
+        Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
+        Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
+        \IdeasBucket\QueueBundle\IdeasBucketQueueBundle::class => ['all' => true],
+    ];
+
+
 Then in `config.yml` you can define configurations for each of the queue drivers that are included with the bundle, which includes a database, [Beanstalkd](https://kr.github.io/beanstalkd/), [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](http://redis.io),  and a synchronous driver that will execute jobs immediately (for local use). A `null` queue driver is also included which simply discards queued jobs.
     
 Basic minimal configuration that is needed for QueueBundle is to configure `cache_handler`. Basically it can be any service that implements any one of these interfaces.
@@ -94,11 +118,11 @@ You can use any cache adapter here. For more information regarding cache handler
 Full configuration for QueueBundle is following.     
           
     ideasbucket_queue:
-        cache_handler: app.cache
+        cache_handler: cache.app
         default: sync # default
         # Default config for command path you may need to change 
         # this if you are using Symfony 2.x directory structure.
-        command_path: %kernel.root_dir%/../bin/
+        command_path: '%kernel.root_dir%/../bin/'
         lock_path: ~
         lock_service: ideasbucket_queue.filesystem_switch # Default value
         connections:

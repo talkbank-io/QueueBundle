@@ -3,8 +3,6 @@
 namespace IdeasBucket\QueueBundle;
 
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessUtils;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Class Listener
@@ -75,27 +73,7 @@ class Listener
     {
         $command = 'idb_queue:work %s --once --queue=%s --delay=%s --memory=%s --sleep=%s --tries=%s';
 
-        return "{$this->phpBinary()} {$this->consoleBinary()} {$command}";
-    }
-
-    /**
-     * Get the PHP binary.
-     *
-     * @return string
-     */
-    protected function phpBinary()
-    {
-        return ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false));
-    }
-
-    /**
-     * Get the console binary.
-     *
-     * @return string
-     */
-    protected function consoleBinary()
-    {
-        return defined('CONSOLE_BINARY') ? ProcessUtils::escapeArgument(CONSOLE_BINARY) : 'console';
+        return "bin/console {$command}";
     }
 
     /**
@@ -141,7 +119,7 @@ class Listener
         // line that we will pass into a Symfony process object for processing.
         $command = $this->formatCommand($command, $connection, $queue, $options);
 
-        return new Process($command, $this->commandPath, null, null, $options->timeout);
+        return new Process([$command], $this->commandPath, null, null, $options->timeout);
     }
 
     /**
@@ -154,7 +132,7 @@ class Listener
      */
     protected function addEnvironment($command, ListenerOptions $options)
     {
-        return $command . ' --env=' . ProcessUtils::escapeArgument($options->environment);
+        return $command . ' --env=' . $options->environment;
     }
 
     /**
@@ -171,8 +149,8 @@ class Listener
     {
         return sprintf(
             $command,
-            ProcessUtils::escapeArgument($connection),
-            ProcessUtils::escapeArgument($queue),
+            $connection,
+            $queue,
             $options->delay, $options->memory,
             $options->sleep, $options->maxTries
         );
