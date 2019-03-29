@@ -58,14 +58,20 @@ class GenerateCommand extends Command
     {
         $helper = $this->getHelper('question');
 
-        $msg = '<question>Please enter the bundle name where you want to define the entity (AppBundle):</question> ';
-        $question = new Question($msg, 'AppBundle');
+        $msg = '<question>Please enter the bundle name where you want to define the entity (App):</question> ';
+        $question = new Question($msg, 'App');
         $bundleName = $helper->ask($input, $output, $question);
 
         try {
+            if ($bundleName !== 'App') {
+                $namespace = $this->getNamespace($this->kernel->getBundle($bundleName));
+                $path = $this->getOutputPath($this->fileLocator->locate('@' . $bundleName) . 'Job');
+            } else {
+                $namespace = "$bundleName\Job";
+                $path = "src/Job";
+            }
 
-            $namespace = $this->getNamespace($this->kernel->getBundle($bundleName));
-            $path = $this->getOutputPath($this->fileLocator->locate('@' . $bundleName) . 'Job');
+            $path = $this->getOutputPath($path);
 
         } catch (\InvalidArgumentException $exception) {
 
