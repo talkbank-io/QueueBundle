@@ -1,5 +1,5 @@
 {
-    "name": "talkbank/queue-bundle",
+    "name": "talkbank-io/queue-bundle",
     "type": "talkbank-queue-bundle",
     "description": "Fork IdeasBucket QueueBundle for Symfony Framework",
     "keywords": ["queue"],
