@@ -1,6 +1,6 @@
 {
-    "name": "kogeva/queue-bundle",
-    "type": "kogeva-queue-bundle",
+    "name": "talkbank/queue-bundle",
+    "type": "talkbank-queue-bundle",
     "description": "Fork IdeasBucket QueueBundle for Symfony Framework",
     "keywords": ["queue"],
     "license": "MIT",
